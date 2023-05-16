@@ -1,5 +1,6 @@
 import SpeechRecognition, {useSpeechRecognition} from 'react-speech-recognition';
 import {Button} from "@mui/material";
+import {useEffect} from "react";
 
 const SpeechToText = ({setSpeechToText}) => {
   const {
@@ -9,11 +10,13 @@ const SpeechToText = ({setSpeechToText}) => {
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
   
+  useEffect(() => {
+    setSpeechToText(transcript);
+  }, [transcript, setSpeechToText]);
+  
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
-  
-  setSpeechToText(transcript);
   
   return (
     <Button id="speechToText"

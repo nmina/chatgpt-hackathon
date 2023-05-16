@@ -1,25 +1,20 @@
 import './virtualCardsList.css';
 import {Box, Container} from "@mui/material";
-import React from "react";
-import {GridColDef} from "@mui/x-data-grid";
+import React, {useState} from "react";
 import Chat from "./Chat";
+import ResultTable from "./ResultTable";
+import testData from "../ai/test-data.json";
 
 export function Main() {
+  const [data, setData] = useState(testData);
+  
   return (
     <Box id="resultContainer">
       <Chat/>
-      <Table/>
+      <ResultTable records={data}/>
       <Graph/>
       <MoreDetails/>
     </Box>
-  );
-}
-
-function Table() {
-  return (
-    <Container maxWidth="lg" id="tableContainer">
-      Table will go here
-    </Container>
   );
 }
 
@@ -38,32 +33,3 @@ function MoreDetails() {
     </Container>
   );
 }
-
-const columns: GridColDef[] = [
-  {
-    field: 'id',
-    headerName: 'Virtual Card',
-    width: 200
-  },
-  {
-    field: 'cardToken',
-    headerName: 'Card Token',
-    width: 200,
-    editable: false,
-    sortable: true
-  },
-  {
-    field: 'expirationDate',
-    headerName: 'Expiration Date',
-    width: 200,
-    editable: false,
-    sortable: true
-  },
-  {
-    field: 'cardholderName',
-    headerName: 'Cardholder Name',
-    width: 200,
-    editable: false,
-    sortable: true
-  }
-];

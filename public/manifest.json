@@ -1,0 +1,9 @@
+{
+  "short_name": "Payment Gateway - Virtual Card LookUp",
+  "name": "Payment Gateway - Virtual Card LookUp",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

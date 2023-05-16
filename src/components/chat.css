@@ -1,0 +1,24 @@
+#chatContainer {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: block;
+}
+
+#question {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+}
+
+#buttons {
+    text-align: right;
+}
+
+#chatSpace {
+    overflow: scroll;
+    height: 100px;
+    display: flex;
+    flex-direction: column-reverse;
+}

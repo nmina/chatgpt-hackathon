@@ -1,119 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>RCG IT HR ChatGPT API Model</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  </head>
-  <body>
-    <main>
-        <h1>RCG IT HR ChatGPT4 API</h1>  
-        <form action="">
-            <label for="user-input">Please Submit Your Question:</label>
-            <input type="text" name="message" id="message" width="100px">
-            <button type="submit">send</button>
-        </form>
-        <div id="chat-log">
+<html>
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <style>
+      .graph {
+          display: flex;
+          align-items: center;
+          margin-bottom: 20px;
+      }
 
-        </div>
-    </main>
-	<script>
+      .bar {
+          height: 30px;
+          background-color: #007bff;
+          margin-right: 5px;
+      }
 
-        const messageArray = [];
-        const systemMsg ='{"role": "system","content": "YOU ARE CUSTOM ASSISTANT WITH YOUR KNOWLEDGE LIMITED TO CHAT HISTORY ONLY, YOU DO NOT KNOW ANYTHING OTHER THAN WHAT IS IN THE CHAT HISTORY. ANSWER QUESTIONS ONLY FROM CHAT HISTORY, DO NOT USE ANY OTHER DATA OTHER THAN CHAT HISTORY"}';
-        messageArray.push(systemMsg);
-        //console.log(messageArray);
-        var usermsg = '{"role": "user","content": "i asked you not to use phrase \'chat history\' always refer as \'data provided\'"}';
-        messageArray.push(usermsg);
-        //console.log(messageArray);
-        var customContent = '[{"Employee File Number":67140,"ProjectED DATE":"6/30/23","Destination Ship":"NV","Employee Name":"SERRAO, LOUIS RICHAR","Travel Date":"6/30/23","From":"LAX","TO":"KIN"," Predicted Cost ":" $300.00 "," Actual Cost ":" $200.00 "},{"Employee File Number":66138,"ProjectED DATE":"1/12/24","Destination Ship":"FR","Employee Name":"MURDOCKS CALVIN, HAR","Travel Date":"1/12/24","From":"MIA","TO":"SJO"," Predicted Cost ":" $272.00 "," Actual Cost ":" $427.59 "},{"Employee File Number":66138,"ProjectED DATE":"6/23/23","Destination Ship":"FR","Employee Name":"WATSON EDWARDS, GABY","Travel Date":"6/22/23","From":"SJO","TO":"MIA"," Predicted Cost ":" $274.00 "," Actual Cost ":" $200.00 "},{"Employee File Number":66140,"ProjectED DATE":"6/12/23","Destination Ship":"NV","Employee Name":"WALTERS CALVIN, FERN","Travel Date":"6/12/23","From":"LAX","TO":"SJO"," Predicted Cost ":" $401.00 "," Actual Cost ":" $756.95 "},{"Employee File Number":66145,"ProjectED DATE":"12/10/23","Destination Ship":"SY","Employee Name":"COPE, STUART","Travel Date":"12/10/23","From":"MIA","TO":"SJO"," Predicted Cost ":" $272.00 "," Actual Cost ":" $637.95 "},{"Employee File Number":66145,"ProjectED DATE":"5/21/23","Destination Ship":"SY","Employee Name":"DALEY, CLUNIS OLIVER","Travel Date":"5/20/23","From":"SJO","TO":"BCN"," Predicted Cost ":" $775.00 "," Actual Cost ":" $894.08 "},{"Employee File Number":66145,"ProjectED DATE":"3/15/23","Destination Ship":"OY","Employee Name":"ARCHES, LORENZO CABA","Travel Date":"3/15/23","From":"AUA","TO":"SJO"," Predicted Cost ":" $461.56 "," Actual Cost ":" $916.00 "},{"Employee File Number":66189,"ProjectED DATE":"9/28/22","Destination Ship":"GR","Employee Name":"WRIGHT GRANT, ZOILO","Travel Date":"1/14/23","From":"SVD","TO":"POS"," Predicted Cost ":" $140.00 "," Actual Cost ":" $432.55 "}]';
-        var assistantmsg = '{"role": "assistant","content":'+JSON.stringify(customContent)+'}';
-        messageArray.push(assistantmsg);
-        console.log(messageArray);
+      .label {
+          font-weight: bold;
+          margin-right: 10px;
+      }
+  </style>
+</head>
+<body>
+<div class="graph mdl-card mdl-shadow--2dp">
+  <div class="label">Fish:</div>
+  <div class="bar mdl-cell--4-col-desktop"></div>
+  <div>10,475</div>
+</div>
 
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer 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");
+<div class="graph mdl-card mdl-shadow--2dp">
+  <div class="label">Dogs:</div>
+  <div class="bar mdl-cell--6-col-desktop"></div>
+  <div>50%</div>
+</div>
 
-        
+<!-- Add more graph divs for other data points if needed -->
 
-        const chatLog = document.getElementById('chat-log');
-        const message = document.getElementById('message');
-        const form = document.querySelector('form');
-        form.addEventListener('submit', (e) => {
-
-            e.preventDefault();
-            const messageText = message.value;
-
-            const usermsg = '{"role": "user","content": "'+messageText+'"}';
-            messageArray.push(usermsg);
-            console.log(messageArray);
-            
-            var rawString = '{"model": "gpt-3.5-turbo","messages": ['+messageArray+'],"temperature": 0.1}';
-            console.log(rawString);
-
-            var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: rawString,
-            redirect: 'follow'
-            };
-
-            
-            message.value = '';
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            messageElement.classList.add('user-message')
-            messageElement.innerHTML = '<div class="message__text">USER: '+messageText+'</div>';
-            chatLog.appendChild(messageElement);
-
-            fetch("https://api.openai.com/v1/chat/completions", requestOptions)
-            .then(response => response.text())
-            //.then(result => console.log(result))
-            .then(result => {
-                const resultString = result; 
-                const JSONString = JSON.parse(result); console.log(JSONString);
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            messageElement.classList.add('bot-message')
-            messageElement.innerHTML = '<div class="message__text">ASSISTANT: '+JSONString.choices[0].message.content +'</div>';
-            messageElement.innerHTML.replace("\n","<br>");
-            chatLog.appendChild(messageElement);
-
-            var assistantReply = JSON.stringify(JSONString.choices[0].message);
-            console.log(assistantReply);
-            messageArray.push(assistantReply);
-            console.log(messageArray);
-            
-            if (JSONString.usage.total_tokens > 3696){
-            const errorElement = document.createElement('div');
-            errorElement.classList.add('message');
-            errorElement.classList.add('stop-message')
-            if(JSONString.usage.total_tokens > 4096){
-                errorElement.innerHTML = '<div class="message__text"> *** TOKEN LIMIT REACHED END OF SESSION ***, Total Tokens used: '
-                +JSONString.usage.total_tokens 
-                +'; promppt tokens:'+JSONString.usage.prompt_tokens
-                +'; completion tokens:'+JSONString.usage.completion_tokens
-                +'</div>';
-            }else{ 
-                errorElement.innerHTML = '<div class="message__text"> Token limit reaching max 4096, answers might be incorrect or truncated, Total Tokens used: '
-                +JSONString.usage.total_tokens 
-                +'; promppt tokens:'+JSONString.usage.prompt_tokens
-                +'; completion tokens:'+JSONString.usage.completion_tokens
-                +'</div>';
-            }
-            
-                chatLog.appendChild(errorElement);
-            }
-
-            })
-            .catch(error => {console.log('error', error); messageArray.pop();});
-
-            
-        })
-    </script>
-  </body>
+</body>
 </html>

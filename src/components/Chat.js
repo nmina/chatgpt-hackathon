@@ -1,45 +1,48 @@
-import React, {useEffect} from "react";
-import {Button, Container, TextField} from "@mui/material";
+import React, {useEffect, useRef} from "react";
+import {Button, Container, LinearProgress, TextField} from "@mui/material";
 import Alert from '@mui/joy/Alert';
 import './chat.css';
 import SpeechToText from "./SpeechToText";
 import {sendMessage} from "../ai/chat-ai";
 
-let questionRef;
-
 const USER = "User";
 const BOT = "Bot";
 
-const Chat = ({records}) => {
+const Chat = ({setData}) => {
   const [chatHistory, setChatHistory] = React.useState([]);
   const [transcript, setTranscript] = React.useState('');
   const [speechToText, setSpeechToText] = React.useState('');
+  const [loaderVisible, setLoaderVisibility] = React.useState(false);
+  const questionRef = useRef(null);
   
   useEffect(() => {
     setTranscript(speechToText);
-    questionRef.focus();
+    questionRef.current.focus();
   }, [speechToText]);
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateChatHistory(USER, questionRef.value);
+    setLoaderVisibility(true);
+    updateChatHistory(USER, questionRef.current.value);
     
-    sendMessage(questionRef.value)
+    sendMessage(questionRef.current.value)
       .then(response => {
+        console.log('the response is', response);
         updateChatHistory(BOT, response);
+        setLoaderVisibility(false);
+        setData(response);
       });
     
     clearInput(e);
   }
   
   const handleEnter = (e) => {
-    if (e.key === 'Enter' && questionRef.value !== '') {
+    if (e.key === 'Enter' && questionRef.current.value !== '') {
       handleSubmit(e);
     }
   };
   
   const clearInput = (e) => {
-    console.log('called', e);
     e.preventDefault();
     setTranscript('');
   }
@@ -57,7 +60,7 @@ const Chat = ({records}) => {
         <TextField id="question"
                    label="Type here..."
                    variant="standard"
-                   inputRef={instance => questionRef = instance}
+                   inputRef={questionRef}
                    sx={{flex: 1}}
                    value={transcript}
                    onChange={e => setTranscript(e.target.value)}
@@ -69,6 +72,7 @@ const Chat = ({records}) => {
         <Button
           onClick={handleSubmit}>Submit</Button>
       </Container>
+      {loaderVisible && <LinearProgress/>}
       <ChatSpace chatHistory={chatHistory}/>
     </Container>);
 }

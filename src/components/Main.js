@@ -3,17 +3,16 @@ import {Box, Container} from "@mui/material";
 import React, {useState} from "react";
 import Chat from "./Chat";
 import ResultTable from "./ResultTable";
+import ResultsSection from "./ResultsSection";
 import testData from "../ai/test-data.json";
 
 export function Main() {
-  const [data, setData] = useState(testData);
+  const [data, setData] = useState("");
   
   return (
     <Box id="resultContainer">
-      <Chat/>
-      <ResultTable records={data}/>
-      <Graph/>
-      <MoreDetails/>
+      <Chat setData={setData}/>
+      <ResultsSection data={data}/>
     </Box>
   );
 }
